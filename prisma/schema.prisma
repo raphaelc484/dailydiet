@@ -22,11 +22,6 @@ model User {
   @@map("users")
 }
 
-enum OnOff {
-  ON
-  OFF
-}
-
 model Meals {
   id             String    @id @default(uuid())
   created_at     DateTime  @default(now())
@@ -36,8 +31,7 @@ model Meals {
   name           String
   description    String
   date_set       DateTime
-  hour_set       DateTime
-  on_or_off_diet OnOff
+  on_or_off_diet Boolean
 
   @@map("meals")
 }
