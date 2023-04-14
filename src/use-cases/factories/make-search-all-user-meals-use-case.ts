@@ -2,8 +2,8 @@ import { PrismaMealRepository } from '@/repositories/prisma/prisma-meal-reposito
 import { SearchAllUserMealsUseCase } from '../search-all-user-meals'
 
 export function makeSearchAllUserMealsUseCase() {
-  const rismaMealRepository = new PrismaMealRepository()
-  const useCase = new SearchAllUserMealsUseCase(rismaMealRepository)
+  const prismaMealRepository = new PrismaMealRepository()
+  const useCase = new SearchAllUserMealsUseCase(prismaMealRepository)
 
   return useCase
 }

@@ -27,4 +27,14 @@ export class InMemoryMealsRepository implements MealsRepository {
 
     return meals
   }
+
+  async findUniqueMeal(meal_id: string) {
+    const meal = this.items.find((item) => item.id === meal_id)
+
+    if (!meal) {
+      return null
+    }
+
+    return meal
+  }
 }

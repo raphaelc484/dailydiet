@@ -20,4 +20,14 @@ export class PrismaMealRepository implements MealsRepository {
 
     return meals
   }
+
+  async findUniqueMeal(meal_id: string) {
+    const meal = await prisma.meals.findUnique({
+      where: {
+        id: meal_id,
+      },
+    })
+
+    return meal
+  }
 }
