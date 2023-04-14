@@ -1,22 +1,22 @@
 import { InMemoryMealsRepository } from '@/repositories/in-memory/in-memory-meals-repository'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { CreateMealUseCase } from './create-meal'
+import { SearchDeleteUserMealUseCase } from './search-delete-user-meal'
 import { hash } from 'bcryptjs'
 import { User } from '@prisma/client'
 import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let userRepository: InMemoryUsersRepository
 let mealRepository: InMemoryMealsRepository
-let sut: CreateMealUseCase
+let sut: SearchDeleteUserMealUseCase
 
 let userCreate: User
 
-describe('Create meal use case', () => {
+describe('Search and delete a specific meal use case', () => {
   beforeEach(async () => {
     userRepository = new InMemoryUsersRepository()
     mealRepository = new InMemoryMealsRepository()
-    sut = new CreateMealUseCase(userRepository, mealRepository)
+    sut = new SearchDeleteUserMealUseCase(mealRepository)
 
     userCreate = await userRepository.create({
       name: 'John Doe',
@@ -25,28 +25,33 @@ describe('Create meal use case', () => {
     })
   })
 
-  it('should be able create a meal', async () => {
-    const { meals } = await sut.execute({
+  it('should be able to find and delete a meal', async () => {
+    await mealRepository.create({
       user_id: userCreate.id,
-      name: 'hambuger',
-      description: 'almoço',
-      date_set: new Date(),
+      name: 'pizza',
+      description: 'janta',
+      date_set: '2023-04-13T23:21:03.282Z',
       on_or_off_diet: false,
     })
 
-    expect(meals.name).toEqual('hambuger')
-    expect(meals.description).toEqual('almoço')
+    const createMeal = await mealRepository.create({
+      user_id: userCreate.id,
+      name: 'pizza',
+      description: 'janta',
+      date_set: '2023-04-13T23:21:03.282Z',
+      on_or_off_diet: false,
+    })
+
+    await sut.execute({ meal_id: createMeal.id })
+
+    const listMeals = await mealRepository.findByUserId(userCreate.id)
+
+    expect(listMeals).toHaveLength(1)
   })
 
-  it('should not be able to create with a user that not exist', async () => {
+  it('should not be able to find and delete a meal that not exist', async () => {
     await expect(() =>
-      sut.execute({
-        user_id: 'user-01',
-        name: 'hambuger',
-        description: 'almoço',
-        date_set: new Date(),
-        on_or_off_diet: false,
-      }),
+      sut.execute({ meal_id: 'meal-011' }),
     ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })
