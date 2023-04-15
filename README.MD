@@ -8,9 +8,9 @@
     [x] Está dentro ou não da dieta
 
 
-[] Deve ser possível editar uma refeição, podendo alterar todos os dados acima
-[] Deve ser possível apagar uma refeição
-[] O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
+[x] Deve ser possível editar uma refeição, podendo alterar todos os dados acima
+[x] Deve ser possível apagar uma refeição
+[x] O usuário só pode visualizar, editar e apagar as refeições o qual ele criou
 
 
 [x] Deve ser possível listar todas as refeições de um usuário
