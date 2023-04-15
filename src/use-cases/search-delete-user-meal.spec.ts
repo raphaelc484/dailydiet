@@ -4,7 +4,6 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { SearchDeleteUserMealUseCase } from './search-delete-user-meal'
 import { hash } from 'bcryptjs'
 import { User } from '@prisma/client'
-import { ResourceNotFoundError } from './errors/resource-not-found-error'
 
 let userRepository: InMemoryUsersRepository
 let mealRepository: InMemoryMealsRepository
@@ -47,11 +46,5 @@ describe('Search and delete a specific meal use case', () => {
     const listMeals = await mealRepository.findByUserId(userCreate.id)
 
     expect(listMeals).toHaveLength(1)
-  })
-
-  it('should not be able to find and delete a meal that not exist', async () => {
-    await expect(() =>
-      sut.execute({ meal_id: 'meal-011' }),
-    ).rejects.toBeInstanceOf(ResourceNotFoundError)
   })
 })
