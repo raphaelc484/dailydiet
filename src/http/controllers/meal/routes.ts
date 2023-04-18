@@ -5,6 +5,7 @@ import { searchAllUserMeal } from './search-all-user-meal'
 import { searchUniqueUserMeal } from './search-unique-user-meal'
 import { searchDeleteUserMeal } from './search-delete-user-meal'
 import { updateMeal } from './update-meal'
+import { metrics } from './metrics'
 
 export async function mealRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifiyJWT)
@@ -18,4 +19,6 @@ export async function mealRoutes(app: FastifyInstance) {
   app.delete('/delete-meal/:meal_id', searchDeleteUserMeal)
 
   app.put('/meal/:meal_id', updateMeal)
+
+  app.get('/metrics', metrics)
 }
