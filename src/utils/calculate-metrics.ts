@@ -1,3 +1,5 @@
+import { getMaxMealsInDietPerDay } from './calculate-metrics-test'
+
 interface MealProps {
   user_id: string
   name: string
@@ -11,19 +13,7 @@ export function calculateMetrics(meals: MealProps[]) {
 
   const mealsOffDiet = meals.filter((item) => item.on_or_off_diet === false)
 
-  let countOnDiet = 0
-  let countOnDietMax = 0
-
-  meals.forEach((item) => {
-    if (item.on_or_off_diet === true) {
-      countOnDiet += 1
-      if (countOnDiet > countOnDietMax) {
-        countOnDietMax = countOnDiet
-      }
-    } else {
-      countOnDiet = 0
-    }
-  })
+  const countOnDietMax = getMaxMealsInDietPerDay(meals)
 
   return {
     total: meals.length,
